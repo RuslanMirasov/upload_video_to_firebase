@@ -3,7 +3,7 @@ import admin from 'firebase-admin';
 const { FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY, FIREBASE_STORAGE_BUCKET } = process.env;
 
 if (!FIREBASE_PROJECT_ID || !FIREBASE_CLIENT_EMAIL || !FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n') || !FIREBASE_STORAGE_BUCKET) {
-  throw new Error('❌ Firebase env variables are missing!');
+  throw new Error('Firebase env variables are missing!');
 }
 
 // Инициализируем Firebase Admin SDK
@@ -18,7 +18,6 @@ admin.initializeApp({
 
 const bucket = admin.storage().bucket();
 
-// Функция загрузки файла в Firebase Storage
 const uploadToFirebase = async (filePath: string, destination: string): Promise<string> => {
   await bucket.upload(filePath, {
     destination,

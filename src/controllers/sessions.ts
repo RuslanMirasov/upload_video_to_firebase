@@ -13,21 +13,23 @@ export const uploadVideo = async (req: Request, res: Response, next: NextFunctio
       throw HttpError(400, 'No file uploaded');
     }
 
-    const { mimetype, buffer } = req.file;
+    const { buffer } = req.file;
 
-    const ext = mimetype === 'video/webm' ? 'webm' : 'mp4';
+    const fileName = `session_${Date.now()}.mp4`;
 
-    const outputDir = path.join(__dirname, '../../public/camera/');
-    const outputPath = path.join(outputDir, `session_${Date.now()}.${ext}`);
+    const tempDir = path.join(__dirname, '../../temp/');
+    const tempPath = path.join(tempDir, fileName);
 
-    await fs.mkdir(outputDir, { recursive: true });
+    await fs.mkdir(tempDir, { recursive: true });
 
-    await cropVideo(buffer, outputPath, 110, 150);
+    await cropVideo(buffer, tempPath, 110, 150);
 
-    await fs.access(outputPath);
+    const fileUrl = await uploadToFirebase(tempPath, `sessions/${fileName}`);
+
+    await fs.unlink(tempPath);
 
     res.status(200).json({
-      url: `/camera/${path.basename(outputPath)}`,
+      firebaseUrl: fileUrl,
     });
   } catch (error: unknown) {
     next(error);
