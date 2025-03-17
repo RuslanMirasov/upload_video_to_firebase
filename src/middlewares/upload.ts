@@ -2,7 +2,7 @@ import multer from 'multer';
 import { HttpError } from '../helpers';
 
 const MAX_SIZE_BYTES = 20 * 1024 * 1024; //20Mb
-const ALLOWED_TYPES = ['video/mp4'];
+const ALLOWED_TYPES = ['video/webm', 'video/mp4'];
 
 const storage = multer.memoryStorage();
 

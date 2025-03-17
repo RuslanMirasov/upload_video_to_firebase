@@ -11,7 +11,7 @@ export const uploadVideo = async (req: Request, res: Response, next: NextFunctio
 
     const { buffer } = req.file;
 
-    const fileName = `session_${Date.now()}.mp4`;
+    const fileName = `session_${Date.now()}.webm`;
 
     const tempDir = path.join(__dirname, '../../temp/');
 

@@ -9,11 +9,10 @@ const cropVideo = (buffer: Buffer, outputPath: string, width: number, height: nu
     const stream = Readable.from(buffer);
 
     ffmpeg(stream)
-      .inputFormat('mp4')
-      .videoCodec('libx264')
-      .outputOptions(['-preset veryfast', '-b:v 1000k', '-crf 28', '-an', '-map_metadata -1', '-map_chapters -1', '-threads 2', '-vsync 1']) //.outputOptions(['-b:v 1000k', '-crf 30', '-quality good', '-an', '-map_metadata -1', '-map_chapters -1', '-movflags +faststart'])
+      .videoCodec('libvpx')
+      .outputOptions(['-b:v 1000k', '-crf 28', '-an', '-map_metadata -1', '-map_chapters -1', '-threads 2', '-vsync 1'])
       .videoFilters([`scale=${width}:${height}:force_original_aspect_ratio=increase`, `crop=${width}:${height}`])
-      .format('mp4')
+      .format('webm')
       .output(outputPath)
       .on('end', () => resolve(outputPath))
       .on('error', reject)
