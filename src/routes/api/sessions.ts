@@ -1,10 +1,9 @@
 import { Router } from 'express';
-import { sayHello, uploadVideo } from '../../controllers/sessions';
-import { upload } from '../../helpers';
+import { uploadVideo } from '../../controllers/sessions';
+import upload from '../../middlewares/upload';
 
 const router = Router();
 
-router.get('/', sayHello);
 router.post('/', upload.single('video'), uploadVideo);
 
 export default router;

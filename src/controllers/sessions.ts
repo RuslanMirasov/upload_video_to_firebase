@@ -3,10 +3,6 @@ import { HttpError, cropVideo, uploadToFirebase } from '../helpers';
 import path from 'path';
 import fs from 'fs/promises';
 
-export const sayHello = async (req: Request, res: Response): Promise<void> => {
-  res.status(200).send({ message: 'Hello Foulks!' });
-};
-
 export const uploadVideo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     if (!req.file) {
@@ -18,6 +14,7 @@ export const uploadVideo = async (req: Request, res: Response, next: NextFunctio
     const fileName = `session_${Date.now()}.mp4`;
 
     const tempDir = path.join(__dirname, '../../temp/');
+
     const tempPath = path.join(tempDir, fileName);
 
     await fs.mkdir(tempDir, { recursive: true });
