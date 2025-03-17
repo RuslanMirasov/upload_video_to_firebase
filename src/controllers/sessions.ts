@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { HttpError, cropVideo, uploadToFirebase } from '../helpers';
 import path from 'path';
 import fs from 'fs/promises';
+import { exec } from 'child_process';
 
 export const uploadVideo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -19,6 +20,10 @@ export const uploadVideo = async (req: Request, res: Response, next: NextFunctio
 
     await fs.mkdir(tempDir, { recursive: true });
 
+    exec('ffmpeg -codecs', (error, stdout, stderr) => {
+      console.log('🔥 FFmpeg Available Codecs:', stdout);
+      console.log('🔥 FFmpeg Errors:', stderr);
+    });
     await cropVideo(buffer, tempPath, 110, 150);
 
     const fileUrl = await uploadToFirebase(tempPath, `sessions/${fileName}`);
